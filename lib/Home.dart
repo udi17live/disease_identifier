@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,6 +12,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  File? image;
+
+  Future pickLeafImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final tempImg = File(image.path);
+
+      setState(() {
+        this.image = tempImg;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to Pick Image $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,11 +60,25 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: image != null
+                  ? Image.file(
+                      image!,
+                      width: 150,
+                      height: 150,
+                    )
+                  : Container(
+                      width: 150,
+                      height: 150,
+                      color: Colors.red,
+                    ),
+            ),
             SizedBox(
               width: 150.0,
               height: 150.0,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => pickLeafImage(ImageSource.camera),
                 child: Icon(
                   Icons.add_a_photo_outlined,
                   color: Colors.white,
@@ -67,7 +102,7 @@ class _HomeState extends State<Home> {
                 primary: Colors.green, // <-- Button color
                 onPrimary: Colors.greenAccent, // <-- Splash color
               ),
-              onPressed: () {},
+              onPressed: () => pickLeafImage(ImageSource.gallery),
               label: Text(
                 "Select from Storage".toUpperCase(),
                 style: TextStyle(
