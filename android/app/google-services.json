@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "352111906875",
+    "project_id": "pepper-leaf-disease-identifier",
+    "storage_bucket": "pepper-leaf-disease-identifier.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352111906875:android:b56a441da470eb8b514c1e",
+        "android_client_info": {
+          "package_name": "com.example.disease_identifier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352111906875-6h0q9fha4t60m0uh8ckhqtljitfg9psf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyxKbtTP7dTB8ZMzKIaroNG8Zs7ihFewE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352111906875-6h0q9fha4t60m0uh8ckhqtljitfg9psf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

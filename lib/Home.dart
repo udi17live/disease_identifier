@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:disease_identifier/PredictingScreen.dart';
+import 'package:disease_identifier/utils/DiseaseAPIHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,9 +23,9 @@ class _HomeState extends State<Home> {
 
       final tempImg = File(image.path);
 
-      setState(() {
-        this.image = tempImg;
-      });
+      final imageEncoded = DiseaseAPIHelper().convertImageToBase64(tempImg);
+
+      return imageEncoded;
     } on PlatformException catch (e) {
       print('Failed to Pick Image $e');
     }
@@ -61,19 +63,12 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: image != null
-                  ? Image.file(
-                      image!,
-                      width: 150,
-                      height: 150,
-                    )
-                  : Container(
-                      width: 150,
-                      height: 150,
-                      color: Colors.red,
-                    ),
-            ),
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  "Select the Camera button to capture a picture or select from your gallery to predict!",
+                  style: TextStyle(fontSize: 20.0),
+                  textAlign: TextAlign.center,
+                )),
             SizedBox(
               width: 150.0,
               height: 150.0,
@@ -102,7 +97,17 @@ class _HomeState extends State<Home> {
                 primary: Colors.green, // <-- Button color
                 onPrimary: Colors.greenAccent, // <-- Splash color
               ),
-              onPressed: () => pickLeafImage(ImageSource.gallery),
+              onPressed: () async {
+                String imgEnc = await pickLeafImage(ImageSource.gallery);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PredictingScreen(
+                      image_encoded: imgEnc,
+                    ),
+                  ),
+                );
+              },
               label: Text(
                 "Select from Storage".toUpperCase(),
                 style: TextStyle(
